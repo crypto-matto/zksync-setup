@@ -23,6 +23,16 @@ By default, the HTTP JSON-RPC API will run on port `3050`, while WS API will run
 
 *Note, that it is important that the first start script goes uninterrupted. If you face any issues after the bootstrapping process unexpectedly stopped, you should [reset](#resetting-zksync-state) the local zkSync state and try again.* 
 
+## Run Geth and zkSync respectively on 2 machines
+First you need to bootstrap L1 Geth:
+```
+> ./start-geth.sh
+```
+
+After L1 Geth is properly setup, modify the IP of `ETH_CLIENT_WEB3_URL` in `docker-compose-zksync.yml`. Then kickstart L2 zkSync by running:
+```
+> ./start-zksync.sh
+```
 ## Resetting zkSync state
 
 To reset the zkSync state, run the `./clear.sh` script:
@@ -37,6 +47,18 @@ Note, that you may receive a "permission denied" error when running this command
 > sudo ./clear.sh
 ```
 
+## Resetting Geth and zkSync respectively
+
+To reset the L1 Geth state, run the script:
+```
+> ./clear-geth.sh
+```
+
+Likewise for L2 zkSync, run the script:
+```
+> ./clear-zksync.sh
+```
+
 ## Rich wallets
 
 Local zkSync setup comes with some "rich" wallets with large amounts of ETH on both L1 and L2.
@@ -49,7 +71,7 @@ Also, during the initial bootstrapping of the system, several ERC-20 contracts a
 
 To use custom Postgres database or Layer 1, you should change the `environment` parameters in the docker-compose file:
 
-```yml
+```
 environment:
     - DATABASE_URL=postgres://postgres@postgres/zksync_local
     - ETH_CLIENT_WEB3_URL=http://geth:8545
